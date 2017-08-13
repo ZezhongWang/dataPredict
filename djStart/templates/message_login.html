@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html >
+<head>
+  <meta charset="UTF-8">
+  <title>专家管理系统登录注册</title>
+  
+
+  <link rel='stylesheet prefetch' href='http://fonts.googleapis.com/css?family=Open+Sans'>
+
+      <link rel="stylesheet" href="/static/css/style.css">
+
+  
+</head>
+
+<body>
+  <p class="tip">Click on button in image container</p>
+  {% block init %}<div class="cont">{% endblock %}
+  <div class="form sign-in">
+    <h2>Welcome back,</h2>
+{#      <form method="post" action={% url "Login" %} >#}
+      <form method="post" action="/login/" name="LoginForm">
+        <label>
+          <span>帐&nbsp;&nbsp;号</span>
+          <input class=" {% if login_form.errors.account %} errorput {% endif %}" type="text" name="account"/>
+        </label>
+        <label>
+          <span>密&nbsp;&nbsp;码</span>
+          <input id="login_password" class=" {% if login_form.errors.password %} errorput {% endif %}" type="password" name="password"/>
+        </label>
+
+        <div class="user_type">
+          <table class="user_type" id="RadioButtonList">
+            <tbody>
+                <tr>
+                    <td>
+                        <input class="user_type" id="RadioButtonList_0" name="type" value="expert"
+                               tabindex="0" type="radio" checked="checked"/>
+                        <label class="user_type" for="RadioButtonList_0">专家</label>
+                    </td>
+                    <td>
+                        <input class="user_type" id="RadioButtonList_1" name="type" value="administrator" tabindex="1" type="radio">
+                        <label class="user_type" for="RadioButtonList_1">管理员</label>
+                    </td>
+                </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="loginTips">
+            <span style="color:red;">{% for key, error in login_form.errors.items %}{{ error }}{% endfor %}{{ msg }}</span>
+        </div>
+        <button type="submit" class="submit" onclick="location.href='/login2/'">登录</button>
+{#        <button type="button" class="fb-btn">Connect with <span>facebook</span></button>#}
+          {% csrf_token %}
+      </form>
+  </div>
+  <div class="sub-cont">
+    <div class="img">
+      <div class="img__text m--up">
+        <h2>New here?</h2>
+        <p>Sign up and discover great amount of new opportunities!</p>
+      </div>
+      <div class="img__text m--in">
+        <h2>One of us?</h2>
+        <p>If you already has an account, just sign in. We've missed you!</p>
+      </div>
+      <div class="img__btn">
+        <span class="m--up">Sign Up</span>
+        <span class="m--in">Sign In</span>
+      </div>
+    </div>
+
+      <form method="post" action="/register/" name="RegisterForm">
+        <div class="form sign-up">
+          <h2>Time to feel like home,</h2>
+{#          <label>#}
+{#            <span>Name</span>#}
+{#            <input type="text" />#}
+{#          </label>#}
+          <label>
+            <span>帐&nbsp;&nbsp;号</span>
+            <input class=" {% if login_form.errors.account %} errorput {% endif %}" type="text" name="account" />
+          </label>
+          <label>
+            <span>密&nbsp;&nbsp;码</span>
+            <input id="register_password" class=" {% if login_form.errors.account %} errorput {% endif %}" type="password" name="password"/>
+          </label>
+          <label>
+            <span>重&nbsp;复&nbsp;密&nbsp;码</span>
+            <input id="repeat_password" class=" {% if login_form.errors.account %} errorput {% endif %}" type="password" name="password2"/>
+          </label>
+                <label>
+                    <span>验证码</span>
+                    <input id="id_captcha_0" name="captcha_0" value="{{ hash_key }}" type="hidden" required=""/>
+                    <input id="id_captcha_1" name="captcha_1" type="text" placeholder="请输入验证码" />
+                    <img src="{{ image_url }}" class="captcha" alt="captcha"/>
+                </label>
+            <div class="loginTips">
+            <span style="color:red;">{% for key, error in register_form.errors.items %}{{ error }}{% endfor %}{{ msg }}</span>
+            </div>
+          <button type="submit" class="submit">注&nbsp;&nbsp;册</button>
+{#          <button type="button" class="fb-btn">Join with <span>facebook</span></button>#}
+        </div>
+        {% csrf_token %}
+      </form>
+
+  </div>
+</div>
+
+<a href="https://dribbble.com/shots/3306190-Login-Registration-form" target="_blank" class="icon-link">
+  <img src="http://icons.iconarchive.com/icons/uiconstock/socialmedia/256/Dribbble-icon.png">
+</a>
+<a href="https://twitter.com/NikolayTalanov" target="_blank" class="icon-link icon-link--twitter">
+  <img src="https://cdn1.iconfinder.com/data/icons/logotypes/32/twitter-128.png">
+</a>
+  
+    <script src="/static/js/index.js"></script>
+
+</body>
+</html>
