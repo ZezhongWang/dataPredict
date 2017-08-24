@@ -12,7 +12,7 @@ class LoginForms(forms.Form):
 
 
 class RegisterForms(forms.Form):
-    account = forms.CharField(required=True)
-    password = forms.CharField(required=True, min_length=5)
-    password2 = forms.CharField(required=True, min_length=5)
+    account = forms.CharField(required=True, min_length=5, max_length=20)
+    password = forms.CharField(required=True, min_length=6, max_length=20)
+    password2 = forms.CharField(required=True, min_length=6, max_length=20)
     captcha = CaptchaField(error_messages={"invalid": u"验证码错误"})

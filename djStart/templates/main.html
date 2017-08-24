@@ -13,15 +13,15 @@
 			<ul class="uk-nav uk-nav-side">
 				<li class="uk-nav-header">目录</li>
 			</ul>
-			<ul class="uk-nav uk-nav-side" style="margin-right:-15px;"">	
+			<ul class="uk-nav uk-nav-side" style="margin-right:-15px;">
 				<li>
-					<a href="www.baidu.com">首页</a>
+					<a href="/main/">首页</a>
 				</li>
 				<li>
-					<a href="www.4399.com">专家信息填入</a>
+					<a href="/main/info/">专家信息填入</a>
 				</li>
 				<li>
-					<a href="www.baidu.com">密码修改</a>
+					<a href="/main/reset/">密码修改</a>
 				</li>
 			</ul>
 		</div>
@@ -29,27 +29,33 @@
 	<div class="center">
 		<div class="box">
 			<div class="center-content" style="width: 100%; position:relative;">
-				<h4> 表单 </h4>
-				<form action="/main/" method="POST">
+				<h4> {% block title %}专&nbsp;家&nbsp;信&nbsp;息&nbsp;填&nbsp;入{% endblock %} </h4>
+                {% block content %}
+				<form action="/main/info/" name="expert_form" method="POST" enctype="multipart/form-data" onsubmit="return toValid()">
                     <div class="box">
                             <!-- 表单内容 -->
 
                         <div class="form-group">
-                            <label class="form-label">专家证书编号</label>
+                            <label class="form-label">
+                                状态
+                            </label>
                             <div class="controls">
-                                <input type="text" name="expert_number" maxlength="8">
+                                <span style="color: #c12e2a; font-size: large">
+                                    {% if expert.state == 'undo'%}信息待完善{% endif %}
+                                    {% if expert.state == 'done'%}待审核{% endif %}
+                                    {% if expert.state == 'checked'%}已审核{% endif %}
+                                    {% if expert.state == 'denied'%}已驳回{% endif %}
+                                </span>
                             </div>
                         </div>
+
                         <div class="form-group">
                             <label class="form-label">
-                                性别
+                                专家证书编号
                                 <span style="color: red">*</span>
                             </label>
                             <div class="controls">
-                                <select name="gender" id="gender">
-                                    <option value="man" selected="selected">男</option>
-                                    <option value="women">女</option>
-                                </select>
+                                <input id="expert_number" type="text" value="{{ expert.expert_number|default_if_none:'' }}" name="expert_number" maxlength="8">
                             </div>
                         </div>
 
@@ -58,9 +64,113 @@
                                 证书有效时间
                                 <span style="color: red">*</span>
                             </label>
-                            <div class="controls">
-                                <input type="text" name="valid_time" maxlength="10">
+                            <div class="controls" id="c1">
+                                <input id='valid_time' type="text" value='{{ expert.valid_time|default_if_none:'' }}'name="valid_time" maxlength="10" >
                                 <span>格式形如：2017-07-06</span>
+                                <span id="valid_time_tip" class="hint" hidden="hidden">证书有效时间格式错误</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">
+                                姓名
+                                <span style="color: red">*</span>
+                            </label>
+                            <div class="controls">
+                                <input id="name" type="text" value="{{ expert.name|default_if_none:'' }}" name="name" maxlength="8">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">
+                                性别
+                                <span style="color: red">*</span>
+                            </label>
+                            <div class="controls">
+                                <select name="gender" id="gender">
+                                    <option value="male" {% if expert.gender == 'male'%}selected="selected"{% endif %}>男</option>
+                                    <option value="female" {% if expert.gender == 'female'%}selected="selected"{% endif %}>女</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">
+                                出生日期
+                                <span style="color: red">*</span>
+                            </label>
+                            <div class="controls">
+                                <input id="birthday" type="text" value="{{ expert.birthday|default_if_none:'' }}" name="birthday" maxlength="10">
+                                <span>格式形如：2017-07-06</span>
+                                <span id="birthday_tip" class="hint" hidden="hidden">出生日期格式错误</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">
+                                电话号码
+                                <span style="color: red">*</span>
+                            </label>
+                            <div class="controls">
+                                <input id="phone_number" type="text" value="{{ expert.phone_number|default_if_none:'' }}" name="phone_number" maxlength="11">
+                                <span id="phone_number_tip" class="hint" hidden="hidden">电话号码格式错误</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">
+                                邮箱
+                            </label>
+                            <div class="controls">
+                                <input id="email" type="text" value="{{ expert.email|default_if_none:'' }}" name="email" maxlength="11">
+                                <span id="email_tip" class="hint" hidden="hidden">邮箱格式错误</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">
+                                政治面貌
+                                <span style="color: red">*</span>
+                            </label>
+                            <div class="controls">
+                                <input id="politic" type="text" value="{{ expert.politic|default_if_none:'' }}" name="politic" maxlength="10">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">
+                                证件类型
+                                <span style="color: red">*</span>
+                            </label>
+                            <div class="controls">
+                                <select name="certificate_type" id="certificate_type">
+                                    <option value="i.d.card" {% if expert.certificate_type == 'i.d.card'%}selected="selected"{% endif %}>身份证</option>
+                                    <option value="student card" {% if expert.certificate_type == 'student card'%}selected="selected"{% endif %}>学生证</option>
+                                    <option value="passport" {% if expert.certificate_type == 'passport'%}selected="selected"{% endif %}>护照</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">
+                                证件号
+                                <span style="color: red">*</span>
+                            </label>
+                            <div class="controls">
+                                <input id="certificate_number" type="text" value="{{ expert.certificate_number|default_if_none:'' }}" name="certificate_number" maxlength="18">
+                                <span id="certificate_number_tip" class="hint" hidden="hidden">证件号格式错误</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">
+                                照片
+                            </label>
+                            <div class="controls">
+                                <img id="picture_display" src="{{ MEDIA_URL }}{{ expert.picture }}" alt="请上传图片" >
+{#                                <img src="/{{ expert.picture|default_if_none:'image/2017/08/EER.png' }}" width="100" height="100">#}
+                                <input id="picture" type="file" value="{{ expert.picture }}" name="picture" onchange="file_change(this.value)">
+
                             </div>
                         </div>
 
@@ -75,7 +185,9 @@
                             </div>
                         </div>
                         -->
-
+                    <div>
+                        <span  class="form-tips">{% for key, error in expert_form.errors.items %}{{ error }}{% endfor %}</span>
+                    </div>
 
                     {% csrf_token %}
                     </div>
@@ -83,13 +195,13 @@
                         <button type="submit" class="submit btn-save">保&nbsp;存</button>
                     </div>
                 </form>
-
+                {% endblock %}
 			</div>
 
 		</div>
 	</div>
 </div>
 
-
+    {% block js %}<script src="/static/js/main.js"></script>{% endblock %}
 </body>
 </html>

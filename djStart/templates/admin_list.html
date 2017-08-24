@@ -1,0 +1,40 @@
+{% extends 'admin.html' %}
+{% block head %}专家信息维护{% endblock %}
+{% block body %}
+
+         <div style="margin: 10px; padding: 10px" >
+            <span style="font-size: large">状&nbsp;态&nbsp;筛&nbsp;选</span>
+             <div style="display: inline-block">
+                 <a href="?state=all" class="filter">全部</a>
+                 <a href="?state=done" class="filter">待审核</a>
+                 <a href="?state=checked" class="filter">已审核</a>
+                 <a href="?state=denied" class="filter">已驳回</a>
+             </div>
+         </div>
+
+    <table rules="all">
+        <tbody>
+            <tr>
+                <th width="30%">专家编号</th>
+                <th width="20%">专家名</th>
+                <th width="40%">联系电话</th>
+                <th width="10%">状态</th>
+            </tr>
+
+            {% for expert in all_expert %}
+                <tr>
+                    <td>
+                        <a href="../detail/{{ expert.username }}">{{ expert.expert_number }}</a>
+                    </td>
+                    <td>{{ expert.name }}</td>
+                    <td>{{ expert.phone_number }}</td>
+                    <td>
+                        {% if expert.state == 'done'%}待审核{% endif %}
+                        {% if expert.state == 'checked'%}已审核{% endif %}
+                        {% if expert.state == 'denied'%}已驳回{% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

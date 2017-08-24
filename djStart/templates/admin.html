@@ -1,0 +1,44 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>专家管理系统</title>
+<link rel="stylesheet" href="/static/css/main_style.css" type="text/css">
+</head>
+<body>
+
+<div class="container">
+	<div class="sidebar-left">
+		<div class="sidebar-content">
+			<ul class="uk-nav uk-nav-side">
+				<li class="uk-nav-header">目录</li>
+			</ul>
+			<ul class="uk-nav uk-nav-side" style="margin-right:-15px;">
+				<li>
+					<a href="/admin/">首页</a>
+				</li>
+				<li>
+					<a href="/admin/list/">专家信息维护</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<div class="center">
+		<div class="box">
+			<div class="center-content" style="width: 100%; position:relative;">
+				<h1> {% block head %}首&nbsp;页{% endblock %} </h1>
+                {% block body %}
+				    <p style="text-align: center; font-size: 20px;">
+                        当前有
+                        <a href="/admin/list/" style="font-size: 25px">{{ number }}</a>
+                        个专家待审核
+                    </p>
+                {% endblock %}
+			</div>
+		</div>
+	</div>
+</div>
+
+    {% block js_link %}{% endblock %}
+</body>
+</html>

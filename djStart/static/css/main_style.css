@@ -20,7 +20,23 @@ body {
     box-sizing: border-box;
 }
 
+*::-moz-selection{
+	background: #39f;
+	color: #fff;
+	text-shadow: none;
+}
 
+a{
+	text-decoration:none;
+	color: blue;
+}
+
+
+li{
+	padding: 0px;
+	font-size: large;
+	margin: 10px;
+}
 .container{
 	max-width: 1760px;
 	width: 100%;
@@ -85,6 +101,7 @@ body {
 
 .center-content{
 	display: inline-block;
+
 }
 
 .uk-nav{
@@ -142,4 +159,54 @@ body {
 	border-color: #357ebd;
 	border-radius: 4px;
 	padding: 6px 12px;
+}
+
+.form-tips{
+    font-family: 'Open Sans', Helvetica, Arial, sans-serif;
+    color:red;
+}
+
+.hint{
+    font-family: 'Open Sans', Helvetica, Arial, sans-serif;
+	font-size: 16px;
+    color:red;
+}
+
+
+table, th, td
+{
+	border: 1px solid black;
+}
+
+table{
+	border-collapse:collapse;
+	width: 100%;
+	background-color: snow;
+	margin-bottom: 5px;
+	margin-top: 5px;
+
+}
+
+th{
+	height: 50px;
+	text-align: center;
+	background-color: #5e5e5e;
+	color: whitesmoke;
+}
+
+td{
+	text-align: center;
+	padding:10px;
+	color: #333;
+}
+
+.info{
+	color: #222222;
+	text-align: center;
+	font-size: medium;
+}
+
+.filter{
+	font-size: medium;
+	margin: 10px;
 }

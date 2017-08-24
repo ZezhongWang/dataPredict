@@ -7,7 +7,9 @@
 
 body {
   font-family: 'Open Sans', Helvetica, Arial, sans-serif;
-  background: #ededed;
+  background: #c8c8c8;
+  /*background: #ededed;*/
+  /*background-image: url(/media/image/background.png);*/
 }
 
 input, button {
@@ -236,8 +238,8 @@ label {
   text-align: center;
 }
 label span {
-  font-size: 12px;
-  color: #cfcfcf;
+  font-size: 15px;
+  color: #5e5e5e;
   text-transform: uppercase;
 }
 
@@ -261,7 +263,7 @@ input {
 }
 
 .submit {
-  margin-top: 40px;
+  margin-top: 15px;
   margin-bottom: 20px;
   background: #d4af7a;
   text-transform: uppercase;

@@ -1,0 +1,71 @@
+{% extends 'main.html' %}
+{% block title %}密&nbsp;码&nbsp;修&nbsp;改{% endblock %}
+{% block content %}
+        <form action="/main/reset/" name="reset_form" method="POST" enctype="multipart/form-data">
+                    <div class="box">
+                            <!-- 表单内容 -->
+
+                        <div class="form-group">
+                            <label class="form-label">
+                                当前密码
+                                <span style="color: red">*</span>
+                            </label>
+                            <div class="controls">
+                                <input id="password_before" type="password" name="password_before">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">
+                                新密码
+                                <span style="color: red">*</span>
+                            </label>
+                            <div class="controls">
+                                <input id="password_after" type="password" name="password_after">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">
+                                确认密码
+                                <span style="color: red">*</span>
+                            </label>
+                            <div class="controls">
+                                <input id="password_again" type="password" name="password_again">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">
+                                验证码
+                                <span style="color: red">*</span>
+                            </label>
+                            <div class="controls">
+                                <input id="id_captcha_0" name="captcha_0" value="{{ hash_key }}" type="hidden" required=""/>
+                                <input id="id_captcha_1" name="captcha_1" type="text" placeholder="请输入验证码" />
+                                <img src="{{ image_url }}" class="captcha" alt="captcha"/>
+                            </div>
+                        </div>
+
+                        <div>
+                            <span  class="form-tips">{% for key, error in reset_form.errors.items %}{{ error }}{% endfor %}{{ msg }}</span>
+                        </div>
+
+                        {% csrf_token %}
+                        </div>
+                        <div class="box">
+                            <button type="submit" class="submit btn-save">保&nbsp;存</button>
+                        </div>
+{#                        <div class="form-group">#}
+{#                            <label class="form-label">#}
+{#                                验证码#}
+{#                                <span style="color: red">*</span>#}
+{#                            </label>#}
+{#                            <div class="controls">#}
+{#                                <input id="pass_before" type="text" name="pass_before" maxlength="8">#}
+{#                            </div>#}
+{#                        </div>#}
+                    </div>
+        </form>
+{% endblock %}
+{% block js %}<script src="/static/js/main_reset.js"></script>{% endblock %}

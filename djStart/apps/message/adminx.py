@@ -4,7 +4,7 @@ __date__ = '17-7-14 下午8:02'
 
 import xadmin
 
-from apps.message.models import User
+# from apps.message.models import User
 from xadmin import views
 
 
@@ -24,6 +24,6 @@ class UserAdmin(object):
     search_fields = ['user_id', 'type']
     list_filter = ['user_id', 'type']
 
-xadmin.site.register(User, UserAdmin)
+# xadmin.site.register(User, UserAdmin)
 xadmin.site.register(views.BaseAdminView, BaseSetting)
 xadmin.site.register(views.CommAdminView, GlobalSettings)

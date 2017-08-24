@@ -1,11 +1,13 @@
 from django.shortcuts import render
-from .models import User
 from django.views.generic.base import View
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.backends import ModelBackend
 from django.contrib.auth.hashers import make_password
-from django.http import HttpResponse,HttpResponseRedirect
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
+from django.http import HttpResponse, HttpResponseRedirect
 from .models import UserProfile
+from apps.expert.models import Expert
 from .forms import LoginForms, RegisterForms
 from django.db.models import Q
 from captcha.models import CaptchaStore
@@ -43,8 +45,8 @@ class RegisterView(View):
                 user.username = account
                 user.password = make_password(password)
                 user.save()
-                hash_key = CaptchaStore.generate_key()
-                image_url = captcha_image_url(hash_key)
+                expert = Expert(username=user)
+                expert.save()
                 response = HttpResponse()
                 response.write("<script> alert('注册成功'); location='/login/';</script>")
                 return response
@@ -75,8 +77,13 @@ class LoginView(View):
             type = request.POST.get("type")
             user = authenticate(username=account, password=password, type=type)
             if user is not None:
-                login(request, user)
-                return render(request, "main.html")
+                if type == 'expert':
+                    login(request, user)
+                    # response = HttpResponse()
+                    # response.write("<script> alert('登录成功'); location='/main/';</script>")
+                    return HttpResponseRedirect('/main/')
+                else:
+                    return HttpResponseRedirect('/admin/')
             else:
                 return render(request, "message_login.html", {"msg": "用户名或密码错误"})
         else:
@@ -100,5 +107,9 @@ class LoginView(View):
         #     return render(request, 'message_login.html', {"login_form": login_form})
 
 
+class LoginRequiredMixin(object):
+    @method_decorator(login_required(login_url='/login/'))
+    def dispatch(self, request, *args, **kwargs):
+        return super(LoginRequiredMixin, self).dispatch(request, *args, **kwargs)
 
 
