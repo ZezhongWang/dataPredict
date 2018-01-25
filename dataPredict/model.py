@@ -7,11 +7,15 @@ from sklearn import svm
 
 class LearningModel(object):
     def __init__(self, method='LinearRegression'):
-        self._method = method
         if method == 'LinearRegression':
             self.reg = linear_model.LinearRegression()
-        if method == 'svm':
-            self.reg = svm.SVR(C=0.1)
+        elif method == 'svm':
+            self.reg = svm.SVR(C=10)
+        elif method == 'Bayes':
+            self.reg = linear_model.BayesianRidge()
+        else:
+            print "No this method"
+            exit(0)
 
     def fit(self, train_data, train_label):
         self.reg.fit(train_data, train_label)

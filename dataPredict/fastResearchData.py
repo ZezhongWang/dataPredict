@@ -18,7 +18,7 @@ class FastResearchData:
             pd.concat([self.stock_dict[stock_code], df], axis=0)
 
     def loadStockData(self, stock_code):
-        df = pd.read_csv(os.path.join(path, stock_code+'.csv'))
+        df = pd.read_csv(os.path.join(self.dir_path, stock_code+'.csv'))
         if stock_code not in self.stock_dict.keys():
             self.stock_dict[stock_code] = df
         else:
@@ -36,11 +36,12 @@ class FastResearchData:
         return self.stock_dict
 
     def dumpToHDF5(self, path):
-        store = pd.HDFStore(os.path.join(path, 'data.h5'))
+        store = pd.HDFStore(os.path.join(self.dir_path, 'data.h5'))
         for items in self.stock_dict.items():
             code = items[0]
             df = items[1]
             store.put(code, df)
+        store.close()
 
 if __name__ == '__main__':
     path = '/home/w2w/PycharmProjects/dataPredict/data'

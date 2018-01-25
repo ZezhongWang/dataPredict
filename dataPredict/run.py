@@ -6,9 +6,13 @@ from indicatorGallexy import IndicatorGallexy
 from util import *
 from setting import *
 import argparse
-
+from modelEngine import ModelEngine
+import warnings
+from PIL import Image
 
 if __name__ == '__main__':
+    warnings.filterwarnings("ignore")
+
     parser = argparse.ArgumentParser()
     parser.add_argument("filepath", type=str, help="the directory of the .csv file")
     parser.add_argument("code", type=int, help="the stock code you want to predict")
@@ -36,20 +40,39 @@ if __name__ == '__main__':
 
     # 这里存放了我们的一堆指标计算方法
     # 我们可以将各种指标分成不同的类，以此来管理各种各样的不同分类指标
-    xmIG = IndicatorGallexy()
-    rIG = NewTypeOfIndicatorGallexy()
+    xmIG = IndicatorGallexy(frData)
+    # rIG = NewTypeOfIndicatorGallexy()
 
-    y = xmIG.getNext(frData, 'priceChange')
-    x1 = xmIG.getAvgPrc(frData, 'open')
-    x2 = xmIG.getMACD(frData, 'close', 1, 1)
-    x3 = rIG.getNewIND(frData, 'pp')
-
+    # y = xmIG.getNext(frData, 'priceChange')
+    # x1 = xmIG.getAvgPrc(frData, 'open')
+    # x2 = xmIG.getMACD(frData, 'close', 1, 1)
+    # x3 = rIG.getNewIND(frData, 'pp')
+    X1 = xmIG.getAheadData(code, 'p_change', interval=10)
+    X2 = xmIG.getAvgPrc(code, 'open', interval=10)
+    # X3 = xmIG.getAheadMax(code, 'volume', interval=10)
+    y = xmIG.getPChange(code, 'p_change')
     # ModelEngine是一个管理训练和评估过程的类
     # 可以在ModelEngine中选择不同的模型，以及不同的训练方法，以及不同的变量
-    me = ModelEngine("SVM")
-    me.addX([x1, x2, x3])
+    X = pd.concat([X1, X2], axis=1)
+    # X = [X1
+    # print X
+    X, y = dropNa(X, y)
+
+    # X2 = normalize(X2)
+
+    me = ModelEngine(method)
+    me.addXs(X)
     me.setY(y)
     me.train()
-
+    y_predict = me.predict()
+    draw_p_change_line_chart(code, y_true=y, y_pred=y_predict)
     # 最终可以用Outsample的结果去验证我们模型的好坏
-    print  me.evaluateOutSample()
+    train_loss, test_loss = me.evaluateOutSample()
+    print 'Train Loss = ' + str(train_loss)
+    print 'Test Loss = ' + str(test_loss)
+    print 'Predict result = ' + str(y_predict)
+    img = Image.open(os.path.join('picture', code+'.png'))
+    plt.figure('pic')
+    plt.imshow(img)
+    plt.show()
+
