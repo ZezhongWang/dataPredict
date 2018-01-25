@@ -6,6 +6,8 @@ __date__ = '18-1-25 上午10:39'
 class ModelEngine(object):
     def __init__(self, method='SVM', trainingPart=0.9):
         pass
+
+
     def setY(ySeries):
         pass
     def addX(name, xSeries):
