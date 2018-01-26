@@ -17,20 +17,21 @@ class LearningModel(object):
             print "No this method"
             exit(0)
 
-    def fit(self, train_data, train_label):
-        self.reg.fit(train_data, train_label)
+    def fit(self, X_train, y_train):
+        self.reg.fit(X_train, y_train)
 
-    def predict(self, test_data):
-        pred_label = self.reg.predict(test_data)
-        return pred_label
+    def predict(self, X_test):
+        y_predict = self.reg.predict(X_test)
+        return y_predict
 
-    def score(self, train_data, test_label):
-        score = self.reg.score(train_data, test_label)
+    def score(self, x_test, y_test):
+        """
+        The coefficient R^2 is defined as (1 - u/v), where u is the regression
+        sum of squares ((y_true - y_pred) ** 2).sum() and v is the residual
+        sum of squares ((y_true - y_true.mean()) ** 2).sum().
+        :param x_test:
+        :param y_test:
+        :return: R^2
+        """
+        score = self.reg.score(x_test, y_test)
         return score
-
-    def MSE(self, test_label, pred_label):
-        length = len(test_label)
-        mse = 0
-        for index in range(length):
-            mse += (test_label[index]-pred_label[index])**2
-        return mse

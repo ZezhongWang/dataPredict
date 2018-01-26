@@ -35,7 +35,7 @@ class FastResearchData:
     def getStockDict(self):
         return self.stock_dict
 
-    def dumpToHDF5(self, path):
+    def dumpToHDF5(self):
         store = pd.HDFStore(os.path.join(self.dir_path, 'data.h5'))
         for items in self.stock_dict.items():
             code = items[0]
@@ -45,7 +45,6 @@ class FastResearchData:
 
 if __name__ == '__main__':
     path = '/home/w2w/PycharmProjects/dataPredict/data'
-    write_path = '/home/w2w/PycharmProjects/dataPredict/'
     fd = FastResearchData(path)
     code1 = '000022'
     df = pd.read_csv(os.path.join(path, code1+'.csv'))
@@ -56,4 +55,4 @@ if __name__ == '__main__':
 
     code3 = '000025'
     fd.loadStockData(code3)
-    fd.dumpToHDF5(write_path)
+    fd.dumpToHDF5()

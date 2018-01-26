@@ -2,10 +2,9 @@
 __author__ = 'w2w'
 __date__ = '18-1-25 上午10:38'
 import numpy as np
-import pandas as pd
 from util import *
-from sklearn import preprocessing
 from fastResearchData import FastResearchData
+
 
 class IndicatorGallexy:
     def __init__(self, frData):
@@ -13,7 +12,7 @@ class IndicatorGallexy:
 
     def getNext(self):
         pass
-
+    '''
     def getAheadData(self, code, columnsName, interval=10):
         stock_dict = self._frData.getStockDict()
         origin_df = stock_dict[code]
@@ -50,6 +49,15 @@ class IndicatorGallexy:
         data_set[time_col] = le.fit_transform(data_set[time_col])
         min_max_scaler = preprocessing.MinMaxScaler()
         data_set[time_col] = min_max_scaler.fit_transform(data_set[time_col])
+        return data_set
+    '''
+    def getAheadData(self, code, columnsName, interval=10):
+        # A simple compliment similar to the function above
+        stock_dict = self._frData.getStockDict()
+        origin_df = stock_dict[code]
+        data_set = pd.DataFrame()
+        for i in range(1, interval+1):
+            data_set["x%d"%i] = origin_df[columnsName].shift(-i)
         return data_set
 
     def getAheadAverage(self, code, columnsName, interval=10):

@@ -4,11 +4,10 @@ __date__ = '18-1-25 上午11:35'
 from fastResearchData import FastResearchData
 from indicatorGallexy import IndicatorGallexy
 from util import *
-from setting import *
 import argparse
 from modelEngine import ModelEngine
 import warnings
-from PIL import Image
+
 
 if __name__ == '__main__':
     warnings.filterwarnings("ignore")
@@ -20,7 +19,7 @@ if __name__ == '__main__':
                         default='LinearRegression', help="the method used to do this task")
     parser.add_argument("-r", "--ratio", type=float,
                         default=0.1, help="the validate data set ratio")
-    parser.add_argument("-p", "--preprocess", help="preprocessing or not", action='store_true')
+    # parser.add_argument("-p", "--preprocess", help="preprocessing or not", action='store_true')
     parser.add_argument("-a", "--ahead", help="the number of p_change look ahead",
                         default=0.1, action='store_true')
     args = parser.parse_args()
@@ -36,8 +35,7 @@ if __name__ == '__main__':
     # DataFrame并不一定很快，但是很多数据最开始的格式很可能是DataFrame，
     # 所以可以用这一步进行预处理，转换为我们内部一个更快格式的数据
     # frData.loadFromDataFrame()
-    frData.dumpToHDF5(WRITEPATH)
-
+    frData.dumpToHDF5()
     # 这里存放了我们的一堆指标计算方法
     # 我们可以将各种指标分成不同的类，以此来管理各种各样的不同分类指标
     xmIG = IndicatorGallexy(frData)
@@ -54,11 +52,9 @@ if __name__ == '__main__':
     # ModelEngine是一个管理训练和评估过程的类
     # 可以在ModelEngine中选择不同的模型，以及不同的训练方法，以及不同的变量
     X = pd.concat([X1, X2], axis=1)
-    # X = [X1
-    # print X
-    X, y = dropNa(X, y)
 
-    # X2 = normalize(X2)
+    # drop Nan
+    X, y = dropNa(X, y)
 
     me = ModelEngine(method)
     me.addXs(X)
@@ -71,8 +67,3 @@ if __name__ == '__main__':
     print 'Train Loss = ' + str(train_loss)
     print 'Test Loss = ' + str(test_loss)
     print 'Predict result = ' + str(y_predict)
-    img = Image.open(os.path.join('picture', code+'.png'))
-    plt.figure('pic')
-    plt.imshow(img)
-    plt.show()
-

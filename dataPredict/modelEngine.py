@@ -7,6 +7,11 @@ import pandas as pd
 
 class ModelEngine(object):
     def __init__(self, method='svm', test_set_ratio=0.1):
+        """
+        The constructor of model engine.
+        :param method: the method you choose
+        :param test_set_ratio: the test set ratio
+        """
         self._model = LearningModel(method)
         self._ratio = test_set_ratio
         self.X = pd.DataFrame()
@@ -20,9 +25,18 @@ class ModelEngine(object):
         self.Y = pd.DataFrame(ySeries)
 
     def addX(self, name, xSeries):
+        '''
+        add a simple series
+        :param name: series column name
+        :param xSeries: series to be added
+        '''
         self.X[name] = xSeries
 
     def addXs(self, df):
+        '''
+        add a dataframe
+        :param df: dataframe to be added
+        '''
         self.X = pd.concat([self.X, df], axis=1)
 
     def delX(self, name):
@@ -43,6 +57,9 @@ class ModelEngine(object):
         return self._model
 
     def train_test_split(self, X, y):
+        '''
+        split the train data and test data
+        '''
         num = len(X)
         test_num = int(num * self._ratio)
         self.X_train = X[:-test_num]

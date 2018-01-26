@@ -8,6 +8,9 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 from sklearn import preprocessing
 
+"""
+    some utility function used widely
+"""
 def get_file_list(file_dir):
     # acquire all complete .csv file path under a file director
     file_list = []
@@ -74,7 +77,7 @@ def draw_p_change_line_chart(code, y_true, y_pred):
     plt.title("Part Stock " + code + " p_change line chart")
     pfile_name = code + 'p.png'
     plt.savefig(os.path.join('picture', pfile_name))
-
+    plt.show()
 
 def normalize(X):
     norm = preprocessing.Normalizer()
